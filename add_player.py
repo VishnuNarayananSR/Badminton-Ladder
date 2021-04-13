@@ -19,7 +19,7 @@ class Player(tk.Toplevel):
     def add_player(self,parent):
         name = self.name.get()
         add_player(player_name=name)
-        Ladder.name_stack.append(name)
+        parent.name_stack.append(name)
         parent.update_ladder()
         self.destroy()
 

@@ -2,6 +2,7 @@ import tkinter as tk
 from datetime import datetime
 import turtle
 import os
+from add_player import Player
 HEIGHT = 600
 WIDTH = 300
 MARGIN = 20
@@ -68,30 +69,6 @@ class Ladder(tk.Frame):
             card.write(name)
             # card.clear()
             Ladder.cards.append(card)
-
-class Player(tk.Toplevel):
-    def __init__(self, master=None, parent=None):
-        super().__init__(master = master)
-        self.title("Add player")
-        self.minsize(300,100)
-        self.maxsize(300,100)
-        self.resizable(False,False)
-        self.name = tk.StringVar()
-        self.name_entry = tk.Entry(self,textvariable = self.name,
-                                 font=('calibre',10,'normal'))
-        tk.Label(self, text = "Enter Name").pack(side='top')
-        self.name_entry.pack(side="top")
-        self.bind('<Return>', lambda event: self.add_player(parent))
-        self.add_btn = tk.Button(self, text="ADD", command=lambda: self.add_player(parent))
-        self.add_btn.pack(side="bottom")
-
-    def add_player(self,parent):
-        name = self.name.get()
-        with open("ladder.txt", "a") as ladderfile:
-            ladderfile.write(f'{name}\n')
-        Ladder.name_stack.append(name)
-        parent.update_ladder()
-        self.destroy()
 
 
 
