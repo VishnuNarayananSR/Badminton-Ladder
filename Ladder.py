@@ -18,6 +18,7 @@ class Ladder(tk.Frame):
                 for line in ladderfile.readlines():
                     Ladder.name_stack.append(line.strip())
         self.master = master
+        self.master.resizable(False,False)
         self.pack()
         self.create_ladder(master)
         self.update_ladder()
@@ -72,6 +73,7 @@ class Player(tk.Toplevel):
     def __init__(self, master=None, parent=None):
         super().__init__(master = master)
         self.title("Add player")
+        self.resizable(False,False)
         self.name = tk.StringVar()
         self.name_entry = tk.Entry(self,textvariable = self.name,
                                  font=('calibre',10,'normal'))
@@ -94,6 +96,7 @@ class Challenge(tk.Toplevel):
     def __init__(self, master=None):
         super().__init__(master=master)
         self.title("Add Challege")
+        self.resizable(False,False)
         self.challenger = tk.StringVar()
         self.challengee = tk.StringVar()
         self.date = tk.StringVar()
