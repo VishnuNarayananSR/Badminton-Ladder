@@ -63,6 +63,12 @@ class File:
     def remove_player(self, player_name: str, _date: str) -> None:
         open(file=self.data_filename, mode='a',
              encoding='utf-8').write(f'-EX/{player_name}/{_date}\n')
+    
+    def player_already_present(self,player_name:str)->bool():
+        player_list = self.get_ladder_player_list()
+        if player_name in player_list:
+            return True
+        return False
 
 
 if __name__ == "__main__":
