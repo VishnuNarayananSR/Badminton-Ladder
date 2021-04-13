@@ -3,6 +3,7 @@ from datetime import datetime
 import turtle
 import os
 from Player import Player
+from File import File
 HEIGHT = 600
 WIDTH = 300
 MARGIN = 20
@@ -112,8 +113,9 @@ class Challenge(tk.Toplevel):
                     if abs(pos1 - pos2) > 3:
                         tk.Label(self, text = "challenge to players beyond three places above is forbidden", fg='red').pack(side='bottom')
                     else:
-                        with open("data.txt", "a") as datafile:
-                            datafile.write(f'{name1} {pos1} {name2} {pos2} {dt}\n')
+                        File().write_challege_data(name1, pos1, name2, pos2, _date)
+                        # with open("data.txt", "a") as datafile:
+                        #     datafile.write(f'{name1} {pos1} {name2} {pos2} {dt}\n')
                         self.destroy()
 
                 except ValueError:
