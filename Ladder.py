@@ -4,6 +4,7 @@ import turtle
 import os
 from Player import Player
 from File import File
+from ScoreWindow import ScoreWindow
 HEIGHT = 600
 WIDTH = 300
 MARGIN = 20
@@ -21,7 +22,7 @@ class Ladder(tk.Frame):
                     Ladder.name_stack.append(line.strip())
         self.master = master
         self.master.resizable(False,False)
-        self.pack()
+        self.pack(side='left')
         self.create_ladder(master)
         self.update_ladder()
     def create_ladder(self, master):
@@ -31,10 +32,13 @@ class Ladder(tk.Frame):
         self.canvas.pack(side="right")
         self.add_player = tk.Button(self, text="Add player to ladder",
                                     command=self.add_player)
-        self.add_player.pack(side="right")
+        self.add_player.pack(side="top")
         self.add_challenge = tk.Button(self, text="Add Challenge",
                                     command=self.add_challenge)
         self.add_challenge.pack(side="top")
+        self.score_btn = tk.Button(self, text="Record score",
+                                    command=self.add_score)
+        self.score_btn.pack(side="right")
 
         self.screen = turtle.TurtleScreen(self.canvas)
         self.screen.bgcolor("#0073FF")
@@ -47,6 +51,9 @@ class Ladder(tk.Frame):
         self.update_ladder()
     def add_challenge(self):
         self.new_challenge_window = Challenge(self.master)
+    def add_score(self):
+        self.new_score_window = ScoreWindow(self.master)
+
     def update_ladder(self):
         for pos, name in enumerate(Ladder.name_stack):
             card = turtle.RawTurtle(self.screen)
