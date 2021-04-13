@@ -1,4 +1,4 @@
-from file_operations import add_player
+from File import File
 import tkinter as tk
 class Player(tk.Toplevel):
     def __init__(self, master=None, parent=None):
@@ -18,7 +18,8 @@ class Player(tk.Toplevel):
 
     def add_player(self,parent):
         name = self.name.get()
-        add_player(player_name=name)
+        # edit name part
+        File().add_player(player_name=name, _date=None)
         parent.name_stack.append(name)
         parent.update_ladder()
         self.destroy()
