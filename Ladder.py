@@ -33,13 +33,15 @@ class Ladder(tk.Frame):
         self.add_player = tk.Button(self, text="Add player to ladder",
                                     command=self.add_player)
         self.add_player.pack(side="top")
+        self.remove_player_btn = tk.Button(self, text="Remove Player",
+                                    command=self.remove_player)
+        self.remove_player_btn.pack(side="top")
         self.add_challenge = tk.Button(self, text="Add Challenge",
                                     command=self.add_challenge)
         self.add_challenge.pack(side="top")
         self.score_btn = tk.Button(self, text="Record score",
                                     command=self.add_score)
         self.score_btn.pack(side="right")
-
         self.screen = turtle.TurtleScreen(self.canvas)
         self.screen.bgcolor("#0073FF")
         self.quit = tk.Button(self, text="QUIT", fg="red",
@@ -53,7 +55,8 @@ class Ladder(tk.Frame):
         self.new_challenge_window = Challenge(self.master)
     def add_score(self):
         self.new_score_window = ScoreWindow(self.master)
-
+    def remove_player(self):
+        self.remove_window = Player(self.master, self, "remove")
     def update_ladder(self):
         for pos, name in enumerate(Ladder.name_stack):
             card = turtle.RawTurtle(self.screen)

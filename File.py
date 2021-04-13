@@ -58,11 +58,12 @@ class File:
         open(file=self.ladder_filename, mode='a',
              encoding='utf-8').write(f'{player_name}\n')
         open(file=self.data_filename, mode='a',
-             encoding='utf-8').write(f'+NEW/{player_name}/{_date}\n')
+             encoding='utf-8').write(f'+{player_name}/{_date}\n')
 
     def remove_player(self, player_name: str, _date: str) -> None:
         open(file=self.data_filename, mode='a',
              encoding='utf-8').write(f'-EX/{player_name}/{_date}\n')
+
 
     def player_already_present(self, player_name: str) -> bool():
         player_list = self.get_ladder_player_list()
