@@ -73,6 +73,8 @@ class Player(tk.Toplevel):
     def __init__(self, master=None, parent=None):
         super().__init__(master = master)
         self.title("Add player")
+        self.minsize(300,100)
+        self.maxsize(300,100)
         self.resizable(False,False)
         self.name = tk.StringVar()
         self.name_entry = tk.Entry(self,textvariable = self.name,
@@ -82,6 +84,7 @@ class Player(tk.Toplevel):
         self.bind('<Return>', lambda event: self.add_player(parent))
         self.add_btn = tk.Button(self, text="ADD", command=lambda: self.add_player(parent))
         self.add_btn.pack(side="bottom")
+
     def add_player(self,parent):
         name = self.name.get()
         with open("ladder.txt", "a") as ladderfile:
@@ -97,6 +100,8 @@ class Challenge(tk.Toplevel):
         super().__init__(master=master)
         self.title("Add Challege")
         self.resizable(False,False)
+        self.minsize(300,200)
+        self.maxsize(300,200)
         self.challenger = tk.StringVar()
         self.challengee = tk.StringVar()
         self.date = tk.StringVar()
@@ -109,7 +114,7 @@ class Challenge(tk.Toplevel):
         self.name_entry2.pack(side="top")
         tk.Label(self, text = "Enter Date(dd-mm-yyyy)").pack(side='top')
         self.date_entry.pack(side="top")
-        self.add_btn = tk.Button(self, text="ADD", command=self.add_challenge)
+        self.add_btn = tk.Button(self, text="ADD",width=10,height=2, command=self.add_challenge)
         self.add_btn.pack()
         self.bind('<Return>', lambda event: self.add_challenge())
 
