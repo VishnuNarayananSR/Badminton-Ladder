@@ -2,7 +2,7 @@ import tkinter as tk
 from datetime import datetime
 import turtle
 import os
-from add_player import Player
+from Player import Player
 HEIGHT = 600
 WIDTH = 300
 MARGIN = 20
