@@ -20,8 +20,8 @@ class Player(tk.Toplevel):
         self.bind('<Return>', lambda event: self.add_player(parent))
         if mode == 'remove':
             self.title("Remove Player")
-            self.add_btn = tk.Button(self, text="REMOVE", command=lambda: self.remove_player(parent))
-            self.add_btn.pack(side="top")
+            self.remove_btn = tk.Button(self, text="REMOVE", command=self.remove_player)
+            self.remove_btn.pack(side="top")
         else:
             self.title("Add player")
             self.add_btn = tk.Button(self, text="ADD", command=lambda: self.add_player(parent))
@@ -39,7 +39,7 @@ class Player(tk.Toplevel):
             self.destroy()
         except ValueError:
             tk.Label(self, text = "Invalid date!", fg='red').pack(side='bottom')
-    def remove_player(self,parent):
+    def remove_player(self):
         name = self.name.get()
         date = self.date.get()
         if name and File().player_already_present(name):
