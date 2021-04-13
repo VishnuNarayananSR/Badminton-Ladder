@@ -4,7 +4,7 @@ class File:
         self.data_filename = 'data.txt'
         self.ladder_filename = 'ladder.txt'
 
-    def write_challege_data(self,name1:str,pos1:str,name2:str,pos2:str,_date:date)->None:
+    def write_challege_data(self,name1:str,pos1:str,name2:str,pos2:str,_date:str)->None:
         open(file=self.data_filename,mode='a',encoding='utf-8').write(f'{name1}/{pos1}/{name2}/{pos2}/{date}\n')
 
     def read_data_file(self)->list:
@@ -18,7 +18,7 @@ class File:
             for player in player_list:
                 file.write(f'{player}\n')
 
-    def add_player(self,player_name:str,_date:str)->None:
+    def add_player_file(self,player_name:str,_date:str)->None:
         open(file=self.ladder_filename,mode='a',encoding='utf-8').write(f'{player_name}\n')
         open(file=self.data_filename,mode='a',encoding='utf-8').write(f'+NEW/{player_name}/{_date}\n')
 

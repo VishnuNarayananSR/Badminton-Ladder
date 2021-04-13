@@ -77,9 +77,9 @@ class Challenge(tk.Toplevel):
     def __init__(self, master=None):
         super().__init__(master=master)
         self.title("Add Challege")
-        self.resizable(False,False)
-        self.minsize(300,200)
-        self.maxsize(300,200)
+        # self.resizable(False,False)
+        # self.minsize(300,200)
+        # self.maxsize(300,200)
         self.challenger = tk.StringVar()
         self.challengee = tk.StringVar()
         self.date = tk.StringVar()
