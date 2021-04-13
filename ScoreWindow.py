@@ -12,6 +12,7 @@ class ScoreWindow(tk.Toplevel):
         challenge_list = ttk.Combobox(self, width = 60, textvariable = self.challenge_chosen)
         options = File().get_yet_to_finish_challenges()
         challenge_list['values'] = options
+        challenge_list['state'] = 'readonly'
         challenge_list.current(0)
         challenge_list.pack()
         self.score = tk.StringVar()
