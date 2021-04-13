@@ -113,9 +113,7 @@ class Challenge(tk.Toplevel):
                     if abs(pos1 - pos2) > 3:
                         tk.Label(self, text = "challenge to players beyond three places above is forbidden", fg='red').pack(side='bottom')
                     else:
-                        File().write_challege_data(name1, pos1, name2, pos2, dt)
-                        # with open("data.txt", "a") as datafile:
-                        #     datafile.write(f'{name1} {pos1} {name2} {pos2} {dt}\n')
+                        File().write_challenge_data(name1, pos1, name2, pos2, dt)
                         self.destroy()
 
                 except ValueError:
