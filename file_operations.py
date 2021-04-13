@@ -10,8 +10,9 @@ def read_data_file():
 def get_ladder_player_list():
     return open(file=ladder_filename,mode='r',encoding='utf-8').readlines()
 
-def add_player(player_name):
-    open(file=ladder_filename,mode='a',encoding='utf-8').write(f'{data_to_write}\n')
+def add_player(player_name,_date=None):
+    open(file=ladder_filename,mode='a',encoding='utf-8').write(f'{player_name}\n')
+    open(file=data_filename,mode='a',encoding='utf-8').write(f'+NEW/{player_name}/{_date}/\n')
 
 
 def remove_player(player_name):
