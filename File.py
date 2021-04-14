@@ -218,6 +218,38 @@ class File:
         item = datas[-1]
         temp = item.split("/")
         return datetime.strptime(temp[2], date_format).date().strftime(date_format)
+    
+    def matches_between_two_dates(self,date_1:str,date_2:str)->list:
+        datas = self.read_data_file()
+        date_1 = datetime.strptime(date_1, date_format)
+        date_2 = datetime.strptime(date_2, date_format)
+        ret_data = []
+        for item in datas:
+            temp = item.split("/")
+            if len(temp) == 4:
+                match_date = datetime.strptime(temp[2], date_format)
+                if date_1 <= match_date <= date_2:
+                    ret_data.append(item)
+        return ret_data
+    
+    def order_of_ladder_in_date(self,_date:str)->list:
+        datas = self.read_data_file()
+        player_list = []
+        _date = datetime.strptime(_date, date_format)
+        for item in datas:
+            temp = item.split("/")
+            event_date = datetime.strptime(temp[2], date_format)
+            if event_date <= _date:
+                if len(temp) == 3:
+                    if temp[0] == '+NEW':
+                        player_list.append(temp[1])
+                    elif temp[0] == '-EX':
+                        player_list.remove(temp[1])
+                elif len(temp) == 4:
+                    player_list = self.reorder_ladder_by_match(item,player_list)
+        return player_list
+
 
 if __name__ == "__main__":
-    pass
+    print(File().matches_between_two_dates(date_1='10-12-2000', date_2='1-1-2012'))
+    print(File().order_of_ladder_in_date('12-12-2021'))
