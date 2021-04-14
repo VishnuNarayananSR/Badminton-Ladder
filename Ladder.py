@@ -1,10 +1,10 @@
-import tkinter as tk
-from datetime import datetime
 import turtle
+from datetime import datetime
 import os
+import tkinter as tk
 from Player import Player
 from File import File
-from ScoreWindow import ScoreWindow
+# from ScoreWindow import ScoreWindow
 from ChallengeDisplay import ChallengeDisplay
 HEIGHT = 600
 WIDTH = 300
@@ -26,14 +26,21 @@ class Ladder(tk.Frame):
                     Ladder.name_stack.append(line.strip())
         self.master = master
         self.master.resizable(False, False)
-        self.pack(side='left')
+        self.pack(side="left")
+        self.date_var = tk.StringVar()
+        tk.Label(self,text="Ladder Date:").pack()
+        self.chng_date_btn = tk.Button(self, text="Change Ladder Date", command=self.update_main_date)
+        self.date_var.set(File().latest_date_in_the_data_file())
+        self.update_main_date()
+        self.main_date_entry = tk.Entry(self, textvariable = self.date_var)
+        self.main_date_entry.pack()
+        self.chng_date_btn.pack()
         self.create_ladder(master)
         self.update_ladder()
 
     def create_ladder(self, master):
         self.canvas = tk.Canvas(master)
         self.canvas.config(width=WIDTH, height=HEIGHT)
-        self.canvas.pack()
         self.canvas.pack(side="right")
         self.add_player = tk.Button(self, text="Add player to ladder",
                                     command=self.add_player)
@@ -47,15 +54,17 @@ class Ladder(tk.Frame):
         self.display_challenge_btn = tk.Button(self, text="Display Challenge",
                                     command=self.display_challenge)
         self.display_challenge_btn.pack(side="top")
-        self.score_btn = tk.Button(self, text="Record score",
-                                   command=self.add_score)
-        self.score_btn.pack(side="right")
+        # self.score_btn = tk.Button(self, text="Record score",
+        #                            command=self.add_score)
+        # self.score_btn.pack(side="right")
         self.screen = turtle.TurtleScreen(self.canvas)
         self.screen.bgcolor("#0073FF")
         self.quit = tk.Button(self, text="QUIT", fg="red",
                               command=self.master.destroy)
         self.quit.pack(side="bottom")
 
+    def update_main_date(self):
+        self.main_date = self.date_var.get()
     def add_player(self):
         self.new_player_window = Player(self.master, self)
         self.update_ladder()
@@ -63,8 +72,8 @@ class Ladder(tk.Frame):
     def add_challenge(self):
         self.new_challenge_window = Challenge(self.master)
 
-    def add_score(self):
-        self.new_score_window = ScoreWindow(self.master)
+    # def add_score(self):
+    #     self.new_score_window = ScoreWindow(self.master)
 
     def remove_player(self):
         self.remove_window = Player(self.master, self, "remove")
