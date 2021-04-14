@@ -19,18 +19,19 @@ class Player(tk.Toplevel):
                                    font=('calibre', 10, 'normal'))
         tk.Label(self, text="Enter date(dd-mm-yyyy)").pack(side='top')
         self.date_entry.pack(side="top")
-        self.bind('<Return>', lambda event: self.add_player(parent))
         if mode == 'remove':
             self.title("Remove Player")
             self.remove_btn = tk.Button(
                 self, text="REMOVE", command=self.remove_player)
             self.remove_btn.pack(side="top")
+            self.bind('<Return>', lambda event: self.remove_player())
         else:
             self.title("Add player")
             self.add_btn = tk.Button(
                 self, text="ADD", command=lambda: self.add_player(parent))
             self.add_btn.pack(side="top")
 
+            self.bind('<Return>', lambda event: self.add_player(parent))
     def add_player(self, parent):
         name = self.name.get()
         date = self.date.get()
