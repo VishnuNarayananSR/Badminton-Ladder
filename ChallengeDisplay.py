@@ -2,11 +2,11 @@ import tkinter as tk
 from File import File
 from datetime import datetime
 class ChallengeDisplay(tk.Toplevel):
-    def __init__(self, master=None):
+    def __init__(self, master=None, parent=None):
         super().__init__(master=master)
         self.title("Challenge Display")
         self.by_player_btn = tk.Button(self, text="By player name", command=self.by_player_name)
-        self.yet_play_btn = tk.Button(self, text="Yet to play challenges", command=self.yet_to_play)
+        self.yet_play_btn = tk.Button(self, text="Yet to play challenges", command=lambda : self.yet_to_play(parent))
         self.date_btn = tk.Button(self, text="By date", command=self.by_date)
         self.yet_play_btn.pack()
         self.by_player_btn.pack()
@@ -38,10 +38,13 @@ class ChallengeDisplay(tk.Toplevel):
         self.player_name_label.pack_forget()
         self.bind('<Return>', lambda event :self.date_btn_action())
 
-    def yet_to_play(self):
+    def yet_to_play(self,parent):
         self.display.configure(state='normal')
         self.clear(self.display)
-        self.display.insert(tk.END,"yet to play")
+        self.display.insert(tk.END,f"Yet to play challenges as on {parent.main_date}:")
+        res = File().get_yet_to_finish_challenges(parent.main_date)
+        for i, ch in enumerate(res):
+            self.display.insert(tk.END, f"{i + 1}. {ch} \n")
         self.display.configure(state='disabled')
     def player_btn_action(self):
         self.display.configure(state='normal')

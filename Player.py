@@ -38,9 +38,15 @@ class Player(tk.Toplevel):
         try:
             dt = datetime.strptime (date, "%d-%m-%Y")
             dt = dt.date().strftime("%d-%m-%Y")
-            File().add_player_file(player_name=name, _date=date)
-            parent.update_ladder()
-            self.destroy()
+            latest_date = File().latest_date_in_the_data_file()
+            if dt < latest_date:
+                tk.messagebox.showerror("Date not acceptable", f"""You cannot add players to past.
+                 \n Dates grater than latest date are only acceptable
+                 \n Current latest date in ladder: {latest_date} """)
+            else:
+                File().add_player_file(player_name=name, _date=date)
+                parent.update_main_date()
+                self.destroy()
         except ValueError:
             tk.Label(self, text="Invalid date!", fg='red').pack(side='bottom')
 

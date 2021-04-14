@@ -24,20 +24,31 @@ class Ladder(tk.Frame):
         self.master.resizable(False, False)
         self.pack(side="left")
         self.date_var = tk.StringVar()
-        tk.Label(self,text="Ladder Date:").pack()
-        self.chng_date_btn = tk.Button(self, text="Change Ladder Date", command=self.update_main_date)
+        tk.Label(self,text="Ladder Date:").pack(side="top")
+        self.chng_date_btn = tk.Button(self, text="Update Ladder Date", command=self.update_main_date)
+        self.main_date_entry = tk.Entry(self, textvariable = self.date_var)
+        self.main_date_entry.pack(side="top")
+        self.chng_date_btn.pack(side="top")
+        tk.Label(self,text="Number of challenges displaying:").pack(side="top")
+        self.n_var = tk.StringVar()
+        self.n_var.set(3)
+        self.challenge_n_entry = tk.Entry(self, textvariable = self.n_var)
+        self.challenge_n_btn = tk.Button(self, text="Update challenge count", command= lambda : self.update_challenge_canvas(int(self.n_var.get())))
+        self.challenge_n_entry.pack(side="top")
+        self.challenge_n_btn.pack(side="top")
         self.date_var.set(File().latest_date_in_the_data_file())
         self.create_ladder(master)
         self.update_main_date()
-        self.main_date_entry = tk.Entry(self, textvariable = self.date_var)
-        self.main_date_entry.pack()
-        self.chng_date_btn.pack()
         self.update_ladder()
+        self.update_challenge_canvas(int(self.n_var.get()))
 
     def create_ladder(self, master):
         self.canvas = tk.Canvas(master)
         self.canvas.config(width=WIDTH, height=HEIGHT)
         self.canvas.pack(side="right")
+        self.canvas2 = tk.Canvas(master)
+        self.canvas2.config(width=WIDTH, height=HEIGHT)
+        self.canvas2.pack(side="right")
         self.add_player = tk.Button(self, text="Add player to ladder",
                                     command=self.add_player)
         self.add_player.pack(side="top")
@@ -54,6 +65,7 @@ class Ladder(tk.Frame):
         #                            command=self.add_score)
         # self.score_btn.pack(side="right")
         self.screen = turtle.TurtleScreen(self.canvas)
+        self.challenge_screen = turtle.TurtleScreen(self.canvas2)
         self.quit = tk.Button(self, text="QUIT", fg="red",
                               command=self.master.destroy)
         self.least_player = tk.Button(self,text="Least Active Player",
@@ -84,7 +96,7 @@ class Ladder(tk.Frame):
         self.remove_window = Player(self.master, self, "remove")
 
     def display_challenge(self):
-        self.new_challenge_window = ChallengeDisplay(self.master)
+        self.new_challenge_window = ChallengeDisplay(self.master, self)
     
     def show_least_active_player(self):
         ans = File().get_least_active_player()
@@ -95,6 +107,27 @@ class Ladder(tk.Frame):
     def update_ladder(self):
         self.screen.clear()
         self.screen.bgcolor("#0073FF")
+        title_card = turtle.RawTurtle(self.screen)
+        title_card._tracer(0)
+        title_card.color('white')
+        title_card.fillcolor("#d36e64")
+        title_card.penup()
+        title_card.goto(-WIDTH//2 + MARGIN, HEIGHT//2 -
+                    CARDSPACING - (CARDSPACING * 0))
+        title_card.pendown()
+        title_card.begin_fill()
+        for side in range(2):
+            title_card.forward(CARDWIDTH)
+            title_card.left(90)
+            title_card.forward(CARDH)
+            title_card.left(90)
+        title_card.end_fill()
+        title_card.penup()
+        title_card.goto(-5, HEIGHT//2 -
+                    CARDSPACING - (CARDSPACING * 0) + 5)
+        title_card.pendown()
+        title_card.color("white")
+        title_card.write("BADMINTON LADDER", align="center")
         for pos, name in enumerate(Ladder.name_stack):
             card = turtle.RawTurtle(self.screen)
             card._tracer(0)
@@ -102,7 +135,7 @@ class Ladder(tk.Frame):
             card.fillcolor("#d39364")
             card.penup()
             card.goto(-WIDTH//2 + MARGIN, HEIGHT//2 -
-                      CARDSPACING - (CARDSPACING * pos))
+                      CARDSPACING - (CARDSPACING * (pos + 1)))
             card.pendown()
             card.begin_fill()
             for side in range(2):
@@ -113,13 +146,61 @@ class Ladder(tk.Frame):
             card.end_fill()
             card.penup()
             card.goto(-WIDTH//2 + 10 + MARGIN, HEIGHT//2 -
-                      CARDSPACING - (CARDSPACING * pos) + 5)
+                      CARDSPACING - (CARDSPACING * (pos + 1)) + 5)
             card.pendown()
             card.color("white")
             card.write(name)
             # card.clear()
             Ladder.cards.append(card)
-
+    def update_challenge_canvas(self, N):
+        self.challenge_screen.clear()
+        self.challenge_screen.bgcolor("#2b956d")
+        title_card = turtle.RawTurtle(self.challenge_screen)
+        title_card._tracer(0)
+        title_card.color('white')
+        title_card.fillcolor("#d36e64")
+        title_card.penup()
+        title_card.goto(-WIDTH//2 + MARGIN, HEIGHT//2 -
+                    CARDSPACING - (CARDSPACING * 0))
+        title_card.pendown()
+        title_card.begin_fill()
+        for side in range(2):
+            title_card.forward(CARDWIDTH)
+            title_card.left(90)
+            title_card.forward(CARDH)
+            title_card.left(90)
+        title_card.end_fill()
+        title_card.penup()
+        title_card.goto(-5, HEIGHT//2 -
+                    CARDSPACING - (CARDSPACING * 0) + 5)
+        title_card.pendown()
+        title_card.color("white")
+        title_card.write(f"Latest {N} challenges", align="center")
+        for pos, challenge in enumerate(File().get_latest_n_challenges(N)):
+            card = turtle.RawTurtle(self.challenge_screen)
+            card._tracer(0)
+            card.color("blue")
+            card.fillcolor("#d39364")
+            card.penup()
+            card.goto(-WIDTH//2 + MARGIN, HEIGHT//2 -
+                      CARDSPACING - (CARDSPACING * (pos + 1)))
+            card.pendown()
+            card.begin_fill()
+            for side in range(2):
+                card.forward(CARDWIDTH)
+                card.left(90)
+                card.forward(CARDH)
+                card.left(90)
+            card.end_fill()
+            card.penup()
+            card.goto(-WIDTH//2 + 10 + MARGIN, HEIGHT//2 -
+                      CARDSPACING - (CARDSPACING * (pos + 1)) + 5)
+            card.pendown()
+            card.color("white")
+            res = challenge.split('/')
+            card.write(f"{res[0]} --> {res[1]} on {res[2]}")
+            # card.clear()
+            Ladder.cards.append(card)
 
 class Challenge(tk.Toplevel):
     def __init__(self, master=None):
@@ -163,15 +244,20 @@ class Challenge(tk.Toplevel):
                 try:
                     dt = datetime.strptime (date, "%d-%m-%Y")
                     dt = dt.date().strftime("%d-%m-%Y")
-                    pos1 = Ladder.name_stack.index(name1) + 1
-                    pos2 = Ladder.name_stack.index(name2) + 1
-
-                    if abs(pos1 - pos2) > 3:
-                        tk.Label(self, text="challenge to players beyond three places above is forbidden", fg='red').pack(
-                            side='bottom')
+                    latest_date = File().latest_date_in_the_data_file()
+                    if dt < latest_date:
+                        tk.messagebox.showerror("Date not acceptable", f"""You cannot add players to past.
+                        \n Dates grater than latest date are only acceptable
+                        \n Current latest date in ladder: {latest_date} """)
                     else:
-                        File().write_challenge_data(name1, pos1, name2, pos2, dt, scores)
-                        self.destroy()
+                        pos1 = Ladder.name_stack.index(name1) + 1
+                        pos2 = Ladder.name_stack.index(name2) + 1
+
+                        if abs(pos1 - pos2) > 3:
+                            tk.messgebox.showerror("challenge to players beyond three places or above is forbidden")
+                        else:
+                            File().write_challenge_data(name1, pos1, name2, pos2, dt, scores)
+                            self.destroy()
 
                 except ValueError:
                     tk.Label(self, text = "Invalid date!", fg='red').pack(side='bottom')
