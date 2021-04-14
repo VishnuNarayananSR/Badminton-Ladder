@@ -35,10 +35,12 @@ class Player(tk.Toplevel):
     def add_player(self, parent):
         name = self.name.get()
         date = self.date.get()
+        date_format = "%d-%m-%Y"
         try:
-            dt = datetime.strptime (date, "%d-%m-%Y")
-            dt = dt.date().strftime("%d-%m-%Y")
+            dt = datetime.strptime (date, date_format)
+            # dt = dt.date().strftime("%d-%m-%Y")
             latest_date = File().latest_date_in_the_data_file()
+            latest_date = datetime.strptime(latest_date, date_format)
             if dt < latest_date:
                 tk.messagebox.showerror("Date not acceptable", f"""You cannot add players to past.
                  \n Dates grater than latest date are only acceptable
@@ -47,7 +49,8 @@ class Player(tk.Toplevel):
                 File().add_player_file(player_name=name, _date=date)
                 parent.update_main_date()
                 self.destroy()
-        except ValueError:
+        except ValueError as e:
+            print(e)
             tk.Label(self, text="Invalid date!", fg='red').pack(side='bottom')
 
     def remove_player(self):

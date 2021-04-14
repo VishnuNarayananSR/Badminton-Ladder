@@ -77,7 +77,7 @@ class File:
         return player_list
 
     def __match_finished_ladder_update(self, challenge_data: str) -> None:
-        player_list = self.get_ladder_player_list()
+        player_list = self.getlad
         updated_player_list = self.reorder_ladder_by_match(
             challenge_data,  player_list)
         self.rewrite_ladder_order(updated_player_list)
@@ -249,6 +249,7 @@ class File:
                     elif temp[0] == '-EX':
                         player_list.remove(temp[1])
                 elif len(temp) == 4:
+                    # player_list.append(temp[1])
                     player_list = self.reorder_ladder_by_match(item,player_list)
         return player_list
     

@@ -236,6 +236,8 @@ class Challenge(tk.Toplevel):
         name2 = self.name_entry2.get()
         date = self.date_entry.get()
         scores = self.score_entry.get()
+        if scores == '':
+            scores = None
         if name1 in Ladder.name_stack and name2 in Ladder.name_stack:
             if name1 == name2:
                 tk.Label(self, text="Player cannot challenge himself",

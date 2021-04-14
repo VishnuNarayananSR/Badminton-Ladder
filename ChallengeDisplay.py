@@ -41,7 +41,7 @@ class ChallengeDisplay(tk.Toplevel):
     def yet_to_play(self,parent):
         self.display.configure(state='normal')
         self.clear(self.display)
-        self.display.insert(tk.END,f"Yet to play challenges as on {parent.main_date}:")
+        self.display.insert(tk.END,f"Yet to play challenges as on {parent.main_date}:\n")
         res = File().get_yet_to_finish_challenges(parent.main_date)
         for i, ch in enumerate(res):
             self.display.insert(tk.END, f"{i + 1}. {ch} \n")

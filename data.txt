@@ -1,4 +1,9 @@
-+NEW/abcd/13-1-2020
-+NEW/qwer/14-2-2020
-qwer 2/abcd 1/12-12-2021/14-10 18-15
--EX/abcd/13-12-2021
++NEW/abcd/10-10-2010
++NEW/David/10-10-2010
++NEW/john/12-12-2010
+john 3/David 2/15-10-2010/21-10 22-15
++NEW/nani/1-1-2013
+-EX/nani/12-1-2013
+john 2/abcd 1/14-01-2013/None
++NEW/new player 1/12-12-2013
+new player 1 4/john 1/15-01-2014/10-25 14-25
