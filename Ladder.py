@@ -127,6 +127,11 @@ class Challenge(tk.Toplevel):
         self.name_entry2.pack(side="top")
         tk.Label(self, text="Enter Date(dd-mm-yyyy)").pack(side='top')
         self.date_entry.pack(side="top")
+        self.score = tk.StringVar()
+        self.score_entry = tk.Entry(self,textvariable = self.score,
+                                 font=('calibre',10,'normal'))
+        tk.Label(self, text = "Enter Score entries (Eg:12-21 20-21)").pack(side='top')
+        self.score_entry.pack(side="top")
         self.add_btn = tk.Button(
             self, text="ADD", width=10, height=2, command=self.add_challenge)
         self.add_btn.pack()
@@ -136,7 +141,8 @@ class Challenge(tk.Toplevel):
         name1 = self.name_entry1.get()
         name2 = self.name_entry2.get()
         date = self.date_entry.get()
-        if name1 and name2 in Ladder.name_stack:
+        scores = self.score_entry.get()
+        if name1 in Ladder.name_stack and name2 in Ladder.name_stack:
             if name1 == name2:
                 tk.Label(self, text="Player cannot challenge himself",
                          fg='red').pack(side='bottom')
@@ -151,7 +157,7 @@ class Challenge(tk.Toplevel):
                         tk.Label(self, text="challenge to players beyond three places above is forbidden", fg='red').pack(
                             side='bottom')
                     else:
-                        File().write_challenge_data(name1, pos1, name2, pos2, dt)
+                        File().write_challenge_data(name1, pos1, name2, pos2, dt, scores)
                         self.destroy()
 
                 except ValueError:
