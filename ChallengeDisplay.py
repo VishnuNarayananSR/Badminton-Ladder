@@ -61,7 +61,7 @@ class ChallengeDisplay(tk.Toplevel):
         date_str = self.date.get()
         try:
             dt = datetime.strptime (date_str, "%d-%m-%Y")
-            dt = dt.date()
+            dt = dt.date().strftime("%d-%m-%Y")
             res = File().get_challenges_by_date(date_str)
             self.display.insert(tk.END, f"Challenges on {date_str}:\n\n")
             for i, ch in enumerate(res):

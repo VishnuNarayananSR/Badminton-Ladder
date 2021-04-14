@@ -122,7 +122,7 @@ class Challenge(tk.Toplevel):
             else:
                 try:
                     dt = datetime.strptime (date, "%d-%m-%Y")
-                    dt = dt.date()
+                    dt = dt.date().strftime("%d-%m-%Y")
                     pos1 = Ladder.name_stack.index(name1) + 1
                     pos2 = Ladder.name_stack.index(name2) + 1
 
