@@ -5,6 +5,7 @@ import os
 from Player import Player
 from File import File
 from ScoreWindow import ScoreWindow
+from ChallengeDisplay import ChallengeDisplay
 HEIGHT = 600
 WIDTH = 300
 MARGIN = 20
@@ -43,6 +44,9 @@ class Ladder(tk.Frame):
         self.add_challenge = tk.Button(self, text="Add Challenge",
                                        command=self.add_challenge)
         self.add_challenge.pack(side="top")
+        self.display_challenge_btn = tk.Button(self, text="Display Challenge",
+                                    command=self.display_challenge)
+        self.display_challenge_btn.pack(side="top")
         self.score_btn = tk.Button(self, text="Record score",
                                    command=self.add_score)
         self.score_btn.pack(side="right")
@@ -65,6 +69,9 @@ class Ladder(tk.Frame):
     def remove_player(self):
         self.remove_window = Player(self.master, self, "remove")
 
+    def display_challenge(self):
+        self.new_challenge_window = ChallengeDisplay(self.master)
+        
     def update_ladder(self):
         for pos, name in enumerate(Ladder.name_stack):
             card = turtle.RawTurtle(self.screen)
@@ -126,7 +133,7 @@ class Challenge(tk.Toplevel):
                          fg='red').pack(side='bottom')
             else:
                 try:
-                    dt = datetime.strptime(date, "%d-%m-%Y")
+                    dt = datetime.strptime (date, "%d-%m-%Y")
                     dt = dt.date().strftime("%d-%m-%Y")
                     pos1 = Ladder.name_stack.index(name1) + 1
                     pos2 = Ladder.name_stack.index(name2) + 1
@@ -139,8 +146,7 @@ class Challenge(tk.Toplevel):
                         self.destroy()
 
                 except ValueError:
-                    tk.Label(self, text="Invalid date!",
-                             fg='red').pack(side='bottom')
+                    tk.Label(self, text = "Invalid date!", fg='red').pack(side='bottom')
         else:
             tk.Label(self, text="Unknown Player Name",
                      fg='red').pack(side='bottom')

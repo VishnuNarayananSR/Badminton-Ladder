@@ -35,9 +35,9 @@ class Player(tk.Toplevel):
         name = self.name.get()
         date = self.date.get()
         try:
-            dt = datetime.strptime(date, "%d-%m-%Y")
+            dt = datetime.strptime (date, "%d-%m-%Y")
             dt = dt.date().strftime("%d-%m-%Y")
-            File().add_player_file(player_name=name, _date=dt)
+            File().add_player_file(player_name=name, _date=date)
             parent.name_stack.append(name)
             parent.update_ladder()
             self.destroy()
@@ -49,8 +49,8 @@ class Player(tk.Toplevel):
         date = self.date.get()
         if name and File().player_already_present(name):
             try:
-                dt = datetime.strptime(date, "%d-%m-%Y")
-                dt = dt.date()
+                dt = datetime.strptime (date, "%d-%m-%Y")
+                dt = dt.date().strftime("%d-%m-%Y")
                 File().remove_player(name, date)
                 self.destroy()
             except ValueError:

@@ -105,14 +105,14 @@ class File:
             return True
         return False
 
-    def get_challenges_by_player_name(self, name1: str, name2: str) -> list:
+    def get_challenges_by_player_name(self,name1: str) -> list:#, name2: str) -> list:
         datas = self.read_data_file()
         ret_data = []
         for item in datas:
             temp = item.split("/")
             if len(temp) != 4:
                 continue
-            if item.__contains__(name1) and item.__contains__(name2):
+            if item.__contains__(name1):# and item.__contains__(name2):
                 ret_data.append(item)
         return ret_data
 
