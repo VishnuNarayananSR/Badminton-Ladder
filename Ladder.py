@@ -81,7 +81,8 @@ class Ladder(tk.Frame):
         try:
             Ladder.name_stack =  File().order_of_ladder_in_date(self.main_date)
             self.update_ladder()
-        except ValueError:   
+        except ValueError as e:
+            print(e)   
             tk.messagebox.showerror("Error", "Invalid Ladder Date!")
     def add_player(self):
         self.new_player_window = Player(self.master, self)

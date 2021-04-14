@@ -2,4 +2,4 @@ abcd
 David
 john
 nani
-new player 1
+playee-1

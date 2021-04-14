@@ -5,5 +5,4 @@ john 3/David 2/15-10-2010/21-10 22-15
 +NEW/nani/1-1-2013
 -EX/nani/12-1-2013
 john 2/abcd 1/14-01-2013/None
-+NEW/new player 1/12-12-2013
-new player 1 4/john 1/15-01-2014/10-25 14-25
++NEW/playee-1/12-12-2015
