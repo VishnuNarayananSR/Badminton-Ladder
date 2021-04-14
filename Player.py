@@ -47,6 +47,7 @@ class Player(tk.Toplevel):
                  \n Current latest date in ladder: {latest_date} """)
             else:
                 File().add_player_file(player_name=name, _date=date)
+                parent.date_var.set(dt.date().strftime("%d-%m-%Y"))
                 parent.update_main_date()
                 self.destroy()
         except ValueError as e:
