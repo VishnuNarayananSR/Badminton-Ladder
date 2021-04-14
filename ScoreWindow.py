@@ -18,7 +18,7 @@ class ScoreWindow(tk.Toplevel):
         self.score = tk.StringVar()
         self.score_entry = tk.Entry(self,textvariable = self.score,
                                  font=('calibre',10,'normal'))
-        tk.Label(self, text = "Enter Score entries (12-21 20-21)").pack(side='top')
+        tk.Label(self, text = "Enter Score entries (Eg:12-21 20-21)").pack(side='top')
         self.score_entry.pack(side="top")
         self.challenge_button = tk.Button(self, text="OK", command=lambda : self.write_score(self.challenge_chosen.get(),self.score.get()))
         self.challenge_button.pack()
