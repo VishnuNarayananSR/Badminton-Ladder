@@ -21,13 +21,16 @@ class File:
     def get_ladder_player_list(self) -> list:
         return self.__remove_next_line(open(file=self.ladder_filename, mode='r', encoding='utf-8').readlines())
 
-    def get_yet_to_finish_challenges(self) -> list:
+    def get_yet_to_finish_challenges(self,_date:date) -> list:
         datas = self.read_data_file()
+        _date = datetime.strptime(_date, date_format)
         challenges = []
         for item in datas:
             temp = item.split("/")
-            if len(temp) == 4 and temp[-1].__contains__('None'):
-                challenges.append(item)
+            event_date = datetime.strptime(temp[2], date_format)
+            if event_date >= _date:
+                if len(temp) == 4 and temp[-1].__contains__('None'):
+                    challenges.append(item)
         return challenges
 
     def get_latest_n_challenges(self, cnt: int) -> list:
@@ -248,9 +251,12 @@ class File:
                 elif len(temp) == 4:
                     player_list = self.reorder_ladder_by_match(item,player_list)
         return player_list
+    
+    def update_ladder_file(self,)->None:
+        latest_date = self.latest_date_in_the_data_file()
+        player_list = self.order_of_ladder_in_date(latest_date)
+        self.rewrite_ladder_order(player_list)
 
 
 if __name__ == "__main__":
-    # print(File().matches_between_two_dates(date_1='10-12-2000', date_2='1-1-2012'))
-    # print(File().order_of_ladder_in_date('12-12-2021'))
     pass
