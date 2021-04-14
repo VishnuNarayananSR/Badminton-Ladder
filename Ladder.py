@@ -33,14 +33,14 @@ class Ladder(tk.Frame):
         self.n_var = tk.StringVar()
         self.n_var.set(3)
         self.challenge_n_entry = tk.Entry(self, textvariable = self.n_var)
-        self.challenge_n_btn = tk.Button(self, text="Update challenge count", command= lambda : self.update_challenge_canvas(int(self.n_var.get())))
+        self.challenge_n_btn = tk.Button(self, text="Update challenge count", command= lambda : self.update_challenge_canvas(self.n_var.get()))
         self.challenge_n_entry.pack(side="top")
         self.challenge_n_btn.pack(side="top")
         self.date_var.set(File().latest_date_in_the_data_file())
         self.create_ladder(master)
         self.update_main_date()
         self.update_ladder()
-        self.update_challenge_canvas(int(self.n_var.get()))
+        self.update_challenge_canvas(self.n_var.get())
 
     def create_ladder(self, master):
         self.canvas = tk.Canvas(master)
@@ -176,31 +176,33 @@ class Ladder(tk.Frame):
         title_card.pendown()
         title_card.color("white")
         title_card.write(f"Latest {N} challenges", align="center")
-        for pos, challenge in enumerate(File().get_latest_n_challenges(N)):
-            card = turtle.RawTurtle(self.challenge_screen)
-            card._tracer(0)
-            card.color("blue")
-            card.fillcolor("#d39364")
-            card.penup()
-            card.goto(-WIDTH//2 + MARGIN, HEIGHT//2 -
-                      CARDSPACING - (CARDSPACING * (pos + 1)))
-            card.pendown()
-            card.begin_fill()
-            for side in range(2):
-                card.forward(CARDWIDTH)
-                card.left(90)
-                card.forward(CARDH)
-                card.left(90)
-            card.end_fill()
-            card.penup()
-            card.goto(-WIDTH//2 + 10 + MARGIN, HEIGHT//2 -
-                      CARDSPACING - (CARDSPACING * (pos + 1)) + 5)
-            card.pendown()
-            card.color("white")
-            res = challenge.split('/')
-            card.write(f"{res[0]} --> {res[1]} on {res[2]}")
-            # card.clear()
-            Ladder.cards.append(card)
+        try:
+            N = int(N)
+            for pos, challenge in enumerate(File().get_latest_n_challenges(N)):
+                card = turtle.RawTurtle(self.challenge_screen)
+                card._tracer(0)
+                card.color("blue")
+                card.fillcolor("#d39364")
+                card.penup()
+                card.goto(-WIDTH//2 + MARGIN, HEIGHT//2 -
+                        CARDSPACING - (CARDSPACING * (pos + 1)))
+                card.pendown()
+                card.begin_fill()
+                for side in range(2):
+                    card.forward(CARDWIDTH)
+                    card.left(90)
+                    card.forward(CARDH)
+                    card.left(90)
+                card.end_fill()
+                card.penup()
+                card.goto(-WIDTH//2 + 10 + MARGIN, HEIGHT//2 -
+                        CARDSPACING - (CARDSPACING * (pos + 1)) + 5)
+                card.pendown()
+                card.color("white")
+                res = challenge.split('/')
+                card.write(f"{res[0]} --> {res[1]} on {res[2]}")
+        except ValueError:
+            tk.messagebox.showerror("Error", "Invalid number in challenge count box")
 
 class Challenge(tk.Toplevel):
     def __init__(self, master=None):
