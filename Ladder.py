@@ -20,10 +20,6 @@ class Ladder(tk.Frame):
 
     def __init__(self, master=None):
         super().__init__(master)
-        if os.path.exists('ladder.txt'):
-            with open('ladder.txt', 'r') as ladderfile:
-                for line in ladderfile.readlines():
-                    Ladder.name_stack.append(line.strip())
         self.master = master
         self.master.resizable(False, False)
         self.pack(side="left")
@@ -31,11 +27,11 @@ class Ladder(tk.Frame):
         tk.Label(self,text="Ladder Date:").pack()
         self.chng_date_btn = tk.Button(self, text="Change Ladder Date", command=self.update_main_date)
         self.date_var.set(File().latest_date_in_the_data_file())
+        self.create_ladder(master)
         self.update_main_date()
         self.main_date_entry = tk.Entry(self, textvariable = self.date_var)
         self.main_date_entry.pack()
         self.chng_date_btn.pack()
-        self.create_ladder(master)
         self.update_ladder()
 
     def create_ladder(self, master):
@@ -58,16 +54,25 @@ class Ladder(tk.Frame):
         #                            command=self.add_score)
         # self.score_btn.pack(side="right")
         self.screen = turtle.TurtleScreen(self.canvas)
-        self.screen.bgcolor("#0073FF")
         self.quit = tk.Button(self, text="QUIT", fg="red",
                               command=self.master.destroy)
+        self.least_player = tk.Button(self,text="Least Active Player",
+                                    command=self.show_least_active_player)
+        self.least_player.pack()
+        self.most_player = tk.Button(self,text="Most Active Player",
+                                    command=self.show_most_active_player)
+        self.most_player.pack()
         self.quit.pack(side="bottom")
 
     def update_main_date(self):
         self.main_date = self.date_var.get()
+        try:
+            Ladder.name_stack =  File().order_of_ladder_in_date(self.main_date)
+            self.update_ladder()
+        except ValueError:   
+            tk.messagebox.showerror("Error", "Invalid Ladder Date!")
     def add_player(self):
         self.new_player_window = Player(self.master, self)
-        self.update_ladder()
 
     def add_challenge(self):
         self.new_challenge_window = Challenge(self.master)
@@ -80,8 +85,16 @@ class Ladder(tk.Frame):
 
     def display_challenge(self):
         self.new_challenge_window = ChallengeDisplay(self.master)
-        
+    
+    def show_least_active_player(self):
+        ans = File().get_least_active_player()
+        tk.messagebox.showinfo(message = f"Least active player is: {ans}")
+    def show_most_active_player(self):
+        ans = File().get_most_active_player()
+        tk.messagebox.showinfo(message = f"Most active player is: {ans}")
     def update_ladder(self):
+        self.screen.clear()
+        self.screen.bgcolor("#0073FF")
         for pos, name in enumerate(Ladder.name_stack):
             card = turtle.RawTurtle(self.screen)
             card._tracer(0)

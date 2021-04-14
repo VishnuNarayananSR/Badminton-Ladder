@@ -39,7 +39,6 @@ class Player(tk.Toplevel):
             dt = datetime.strptime (date, "%d-%m-%Y")
             dt = dt.date().strftime("%d-%m-%Y")
             File().add_player_file(player_name=name, _date=date)
-            parent.name_stack.append(name)
             parent.update_ladder()
             self.destroy()
         except ValueError:
