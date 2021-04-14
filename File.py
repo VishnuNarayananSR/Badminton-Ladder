@@ -1,3 +1,7 @@
+from datetime import date,datetime
+
+
+date_format = "%d-%m-%Y"
 
 class File:
     def __init__(self):
@@ -47,19 +51,26 @@ class File:
         player1 = (temp[0].split()[0], int(temp[0].split()[1]))
         player2 = (temp[1].split()[0], int(temp[1].split()[1]))
         score = temp[3]
-        scores = [list(map(int, item.split("-"))) for item in score.split()]
-        player1_set = 0
-        player2_set = 0
-        for a, b in scores:
-            if a > b:
-                player1_set += 1
-            else:
-                player2_set += 1
-        if player1_set > player2_set:
-            player_list.pop(player1[1]-1)
-            player_list.insert(player1[1]-1, player2[0])
-            player_list.pop(player2[1]-1)
-            player_list.insert(player2[1]-1, player1[0])
+        if score != 'None':
+            scores = [list(map(int, item.split("-"))) for item in score.split()]
+            player1_set = 0
+            player2_set = 0
+            for a, b in scores:
+                if a > b:
+                    player1_set += 1
+                else:
+                    player2_set += 1
+            if player1_set > player2_set:
+                player_list.pop(player1[1]-1)
+                player_list.insert(player1[1]-1, player2[0])
+                player_list.pop(player2[1]-1)
+                player_list.insert(player2[1]-1, player1[0])
+        else:
+                player_list.pop(player1[1]-1)
+                player_list.insert(player1[1]-1, player2[0])
+                player_list.pop(player2[1]-1)
+                player_list.insert(player2[1]-1, player1[0])
+
         return player_list
 
     def __match_finished_ladder_update(self, challenge_data: str) -> None:
@@ -95,9 +106,14 @@ class File:
         open(file=self.data_filename, mode='a',
              encoding='utf-8').write(f'+NEW/{player_name}/{_date}\n')
 
-    def remove_player(self, player_name: str, _date: str) -> None:
+    def remove_player(self, player_name: str, _date: str) -> bool:
+        for item in self.read_data_file():
+            if item.__contains__(f'-EX/{player_name}/'):
+                return False
         open(file=self.data_filename, mode='a',
              encoding='utf-8').write(f'-EX/{player_name}/{_date}\n')
+        return True
+
 
     def player_already_present(self, player_name: str) -> bool():
         player_list = self.get_ladder_player_list()
@@ -105,14 +121,36 @@ class File:
             return True
         return False
 
-    def get_challenges_by_player_name(self,name1: str) -> list:#, name2: str) -> list:
+
+    def last_active_date_of_player(self,player_name: str) -> date:
+        datas = self.read_data_file()
+        flag = True
+        latest = None
+        for item in datas:
+            temp = item.split("/")
+            if flag and len(temp) == 3:
+                if temp[1] == player_name:
+                    latest = datetime.strptime(temp[2], date_format)
+                    # latest = latest.date().strftime(date_format)
+                    flag = False
+            elif len(temp) == 4:
+                _player_1 = " ".join(temp[0].split()[:-1])
+                _player_2 = " ".join(temp[1].split()[:-1])
+                if player_name in [_player_1,_player_2]:
+                    date_temp = datetime.strptime(temp[2], date_format)
+                    # date_temp = date_temp.date().strftime(date_format)
+                    if date_temp > latest:
+                        latest = date_temp
+        return latest.date().strftime(date_format)
+        
+    def get_challenges_by_player_name(self, name1: str) -> list:
         datas = self.read_data_file()
         ret_data = []
         for item in datas:
             temp = item.split("/")
             if len(temp) != 4:
                 continue
-            if item.__contains__(name1):# and item.__contains__(name2):
+            if item.__contains__(name1): 
                 ret_data.append(item)
         return ret_data
 
@@ -175,6 +213,11 @@ class File:
             if value == high_cnt:
                 return key
 
+    def latest_date_in_the_data_file(self,)->date:
+        datas = self.read_data_file()
+        item = datas[-1]
+        temp = item.split("/")
+        return datetime.strptime(temp[2], date_format).date().strftime(date_format)
 
 if __name__ == "__main__":
     pass
